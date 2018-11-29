@@ -99,7 +99,7 @@ async function run() {
     const checkEnabled = async function(){
         enabled = await getParam('/posenet_enabled', true);
     }
-    setInterval(DetectingPoses, 50)
+    setInterval(checkEnabled, 3000)
 
 }
 
