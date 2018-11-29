@@ -42,7 +42,8 @@ async function run() {
     let image_width = 0
     let image_height = 0
     let header = null
-    // Parameters for posenet3
+    // Parameters for posenet
+    let enabled = await getParam('/posenet_enabled', true);
     const imageScaleFactor = await getParam('~image_scale_factor', 0.5);
     const flipHorizontal = await getParam('~flip_horizontal', false);
     const outputStride = await getParam('~output_stride', 16);
@@ -54,7 +55,6 @@ async function run() {
     const output_topic = await getParam('~poses_topic','poses')
     // ROS topics
     let pub = rosNode.advertise(output_topic, StringMsg)
-    //
 
 
     let sub = rosNode.subscribe(camera_topic, sensor_msgs.Image,
@@ -75,6 +75,9 @@ async function run() {
     // Loop for detecting poses
     let singleInstance = false
     const DetectingPoses = async function (){
+        if (!enabled){
+            return
+        }
         if (newBuffer == false)  return
         if (singleInstance){
             console.log("Skip")
@@ -92,6 +95,12 @@ async function run() {
         singleInstance = false
     }
     setInterval(DetectingPoses, 50)
+    // Check if posenet is not paused
+    const checkEnabled = async function(){
+        enabled = await getParam('/posenet_enabled', true);
+    }
+    setInterval(DetectingPoses, 50)
+
 }
 
 
