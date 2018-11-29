@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "rosnodejs": "2.x",
-    "@tensorflow/tfjs": "^0.12.0",
-    "@tensorflow/tfjs-node": "~0.1.9",
-    "@tensorflow/tfjs-node-gpu": "~0.1.9",
-    "@tensorflow-models/posenet": "^0.2.0",
+    "@tensorflow/tfjs": "latest",
+    "@tensorflow/tfjs-node": "latest",
+    "@tensorflow/tfjs-node-gpu": "latest",
+    "@tensorflow-models/posenet": "latest",
     "xhr2": "~0.1.4",
     "json-stringify": "1.x"
   }
