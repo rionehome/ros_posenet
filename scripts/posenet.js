@@ -24,7 +24,7 @@ async function run() {
         return default_value
     }
     // Find if GPU is enabled and start tf
-    const gpu = await getParam('~gpu', false)
+    const gpu = await getParam('gpu', false)
     console.log(gpu)
     if (gpu)
         require('@tensorflow/tfjs-node-gpu');
@@ -32,7 +32,7 @@ async function run() {
         require('@tensorflow/tfjs-node');
     const posenet = require('@tensorflow-models/posenet')
     // lowest quality first
-    const multiplier = await getParam('~multiplier', 0.5)
+    const multiplier = await getParam('multiplier', 0.5)
     // This step requires internet connection as weights are loaded from google servers...
     // TODO download them offline
     const net  = await posenet.load(multiplier);
@@ -44,15 +44,15 @@ async function run() {
     let header = null
     // Parameters for posenet
     let enabled = await getParam('/posenet_enabled', true);
-    const imageScaleFactor = await getParam('~image_scale_factor', 0.5);
-    const flipHorizontal = await getParam('~flip_horizontal', false);
-    const outputStride = await getParam('~output_stride', 16);
-    const maxPoseDetections = await getParam('~max_pose', 5);
-    const scoreThreshold = await getParam('~score_threshold', 0.5);
-    const nmsRadius = await getParam('~nms_radius', 20);
+    const imageScaleFactor = await getParam('image_scale_factor', 0.5);
+    const flipHorizontal = await getParam('flip_horizontal', false);
+    const outputStride = await getParam('output_stride', 16);
+    const maxPoseDetections = await getParam('max_pose', 5);
+    const scoreThreshold = await getParam('score_threshold', 0.5);
+    const nmsRadius = await getParam('nms_radius', 20);
     // topic names
-    const camera_topic = await getParam('~topic','camera/image_raw')
-    const output_topic = await getParam('~poses_topic','poses')
+    const camera_topic = await getParam('topic','/image_raw')
+    const output_topic = await getParam('poses_topic','poses')
     // ROS topics
     let pub = rosNode.advertise(output_topic, StringMsg)
 
