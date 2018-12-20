@@ -1,3 +1,4 @@
+#auto-regist no
 cmake_minimum_required(VERSION 2.8.3)
 project(ros_posenet)
 
@@ -6,7 +7,13 @@ project(ros_posenet)
 ## is used, also find other catkin packages
 #find_package(catkin REQUIRED message_generation)
 find_package(catkin REQUIRED COMPONENTS
+    cv_bridge
+  	roscpp
+  	sensor_msgs
+  	std_msgs
 )
+
+add_definitions(-std=c++11)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -165,6 +172,16 @@ install(FILES
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
+include_directories(
+# include
+  ${catkin_INCLUDE_DIRS}
+)
+
+set( OpenCV_DIR "/usr/local/include/opencv2/" )
+find_package( OpenCV REQUIRED )
+
+set(CMAKE_CXX_FLAGS "-pthread")
+
 #############
 ## Testing ##
 #############
@@ -177,3 +194,5 @@ install(FILES
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(viewer src/json11.cpp src/viewer.cpp)
+target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
