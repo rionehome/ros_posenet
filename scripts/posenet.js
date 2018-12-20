@@ -64,7 +64,7 @@ async function run() {
             assert(data.encoding == 'rgb8')
             header = data.header
             let delay = Math.floor(Date.now()) / 1000 - header.stamp.secs - header.stamp.nsecs/1000000000
-            if (delay > 0.05) return
+            if (delay > 0.1) return
             buffer = data.data
             newBuffer = true
             image_height = data.height
