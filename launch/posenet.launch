@@ -24,4 +24,5 @@
             <param name="nms_radius"            value="$(arg nms_radius)" />
         </node>
     </group>
+    <node pkg="ros_posenet" type="model_server.py" name="model_server" output="screen" respawn="true"/>
 </launch>
