@@ -47,12 +47,12 @@ void view(const std_msgs::String::ConstPtr& msg) {
 					double y = std::stod(k["position"]["y"].dump());
 
 					//printf("%f %f\n", x, y );
-					cv::circle(color, cv::Point(x, y), 10, cv::Scalar(0, 0, 255), -1);
-					cv::imshow("Color", color );
-					cv::waitKey(1);
+					cv::circle(color, cv::Point(x, y), 1, cv::Scalar(0, 0, 255), -1);
 				}
 			}
 		}
+		cv::imshow("Color", color );
+		cv::waitKey(1);
 	} else {
 		printf("error\n");
 	}
