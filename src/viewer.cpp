@@ -39,18 +39,18 @@ void view(const std_msgs::String::ConstPtr& msg) {
 	auto json = json11::Json::parse(msg->data, err);
 
 	if (json["poses"].array_items().size() != 0) {
-		for (auto &k : json["poses"][0]["keypoints"].array_items()) {
-			//cout << k["position"]["x"].dump() << endl;
+		for (auto &p : json["poses"].array_items()) {
+			for (auto &k : p["keypoints"].array_items()) {
+				if (std::stod(k["score"].dump()) > 0.1) {
 
-			if (std::stod(k["score"].dump()) > 0.1) {
+					double x = std::stod(k["position"]["x"].dump());
+					double y = std::stod(k["position"]["y"].dump());
 
-				double x = std::stod(k["position"]["x"].dump());
-				double y = std::stod(k["position"]["y"].dump());
-
-				//printf("%f %f\n", x, y );
-				cv::circle(color, cv::Point(x, y), 10, cv::Scalar(0, 0, 255), -1);
-				cv::imshow("Color", color );
-				cv::waitKey(1);
+					//printf("%f %f\n", x, y );
+					cv::circle(color, cv::Point(x, y), 10, cv::Scalar(0, 0, 255), -1);
+					cv::imshow("Color", color );
+					cv::waitKey(1);
+				}
 			}
 		}
 	} else {
