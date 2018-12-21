@@ -13,8 +13,8 @@ PoseNet demo: [Here](https://storage.googleapis.com/tfjs-models/demos/posenet/ca
   *  Clone to ROS workspace and build
   * `npm install` inside the package folder
   * if you use this program offline, you edit must their files.
-  ** ..node_modules/@tensorflow-models/posenet/dist/checkpoints.js
-  ** ..node_modules/@tensorflow-models/posenet/dist/posenet.js
+  * 1: '..node_modules/@tensorflow-models/posenet/dist/checkpoints.js'
+  * 2: '..node_modules/@tensorflow-models/posenet/dist/posenet.js'
   
 ### Configuring
 
@@ -25,7 +25,7 @@ Following ROS parameters should be set:
   *  Algorithm parameters to adjust performance. See [launch file](launch/posenet.launch) for full list> References could be found [PoseNet Official Github](https://github.com/tensorflow/tfjs-models/tree/master/posenet#inputs-2)
   
 ### Running
-  * `roslaunch ros_posenet posenet.launch`
+  * `bash start_posenet.sh`
   
 ### Limitations
  * Only multiple pose detection implemented
