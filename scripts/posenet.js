@@ -33,8 +33,7 @@ async function run() {
     const posenet = require('@tensorflow-models/posenet')
     // lowest quality first
     const multiplier = await getParam('multiplier', 0.5)
-    // This step requires internet connection as weights are loaded from google servers...
-    // TODO download them offline
+
     const net  = await posenet.load(multiplier);
     // Local variables for sync with ROS
     let buffer = []
