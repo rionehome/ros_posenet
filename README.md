@@ -26,6 +26,7 @@ Following ROS parameters should be set:
   
 ### Running
   * `bash start_posenet.sh`
+  * launch ros_kinect
   
 ### Limitations
  * Only multiple pose detection implemented

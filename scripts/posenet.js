@@ -50,7 +50,7 @@ async function run() {
     const scoreThreshold = await getParam('score_threshold', 0.5);
     const nmsRadius = await getParam('nms_radius', 20);
     // topic names
-    const camera_topic = await getParam('topic','/image_raw')
+    const camera_topic = await getParam('topic','/openni2/color')
     const output_topic = await getParam('poses_topic','poses')
     // ROS topics
     let pub = rosNode.advertise(output_topic, StringMsg)
@@ -60,10 +60,11 @@ async function run() {
         (data) => {
             // TODO more encodings
             // Currently works wonly with rgb8 data
-            assert(data.encoding == 'rgb8')
+            assert(data.encoding == 'bgr8')
             header = data.header
             let delay = Math.floor(Date.now()) / 1000 - header.stamp.secs - header.stamp.nsecs/1000000000
-            if (delay > 0.1) return
+            //if (delay > 0.5) return
+            console.log("debug")
             buffer = data.data
             newBuffer = true
             image_height = data.height
