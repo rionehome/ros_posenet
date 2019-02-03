@@ -24,4 +24,5 @@
             <param name="nms_radius"            value="$(arg nms_radius)" />
         </node>
     </group>
+    <node pkg="ros_posenet" name="injection_pose" type="injection_pose"/>
 </launch>

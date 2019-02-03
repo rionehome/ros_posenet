@@ -21,7 +21,7 @@ void getImage_depth(const sensor_msgs::Image::ConstPtr& msg) {
 
 	try {
 		// ROSからOpenCVの形式にtoCvCopy()で変換。cv_ptr->imageがcv::Matフォーマット。
-		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+		cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO16);
 	} catch (cv_bridge::Exception& e) {
 		ROS_ERROR("cv_bridge exception: %s", e.what());
 		return;
@@ -38,24 +38,28 @@ void callback(const std_msgs::String::ConstPtr& msg) {
 
 	if (json["poses"].array_items().size() != 0) {
 		for (auto &p : json["poses"].array_items()) {
+			ros_posenet::Pose pose;
 			for (auto &k : p["keypoints"].array_items()) {
 				if (std::stod(k["score"].dump()) > 0.5) {
 
 					ros_posenet::Keypoint key;
-					ros_posenet::Pose pose;
 
 					key.position.x = std::stod(k["position"]["x"].dump());
-					key.position.x = std::stod(k["position"]["y"].dump());
+					key.position.y = std::stod(k["position"]["y"].dump());
+					key.position.z = depth.at<double>((int)key.position.y, (int)key.position.x);
 					key.score = std::stod(k["score"].dump());
+					key.part = k["part"].dump();
 
 					pose.keypoints.push_back(key);
 
 					//cv::circle(depth, cv::Point(x, y), 3, cv::Scalar(0, 0, 255), -1);
 				}
 			}
+			poses.poses.push_back(pose);
 		}
 		//cv::imshow("Color", depth );
 		//cv::waitKey(1);
+		injected_poses.publish(poses);
 	} else {
 		printf("error\n");
 	}
