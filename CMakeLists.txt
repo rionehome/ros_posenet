@@ -7,10 +7,13 @@ project(ros_posenet)
 ## is used, also find other catkin packages
 #find_package(catkin REQUIRED message_generation)
 find_package(catkin REQUIRED COMPONENTS
-    cv_bridge
-  	roscpp
-  	sensor_msgs
-  	std_msgs
+    roscpp
+    rospy
+    std_msgs
+	sensor_msgs
+	geometry_msgs
+    message_generation
+	cv_bridge
 )
 
 add_definitions(-std=c++11)
@@ -49,12 +52,12 @@ add_definitions(-std=c++11)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
-
+add_message_files(
+	FILES
+	Keypoint.msg
+	Pose.msg
+	Poses.msg
+)
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -69,10 +72,11 @@ add_definitions(-std=c++11)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,6 +110,7 @@ catkin_package(
 #  LIBRARIES
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
+	CATKIN_DEPENDS message_runtime geometry_msgs
 )
 
 ###########
@@ -194,5 +199,7 @@ set(CMAKE_CXX_FLAGS "-pthread")
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(viewer src/json11.cpp src/viewer.cpp)
-target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
+#add_executable(viewer src/json11.cpp src/viewer.cpp)
+#target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
+add_executable(injection_pose src/json11.cpp src/injection_pose.cpp)
+target_link_libraries(injection_pose ${OpenCV_LIBS} ${catkin_LIBRARIES})
