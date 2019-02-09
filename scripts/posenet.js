@@ -64,7 +64,6 @@ async function run() {
             header = data.header
             let delay = Math.floor(Date.now()) / 1000 - header.stamp.secs - header.stamp.nsecs/1000000000
             //if (delay > 0.5) return
-            console.log("debug")
             buffer = data.data
             newBuffer = true
             image_height = data.height

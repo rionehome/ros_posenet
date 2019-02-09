@@ -35,9 +35,10 @@ void callback(const std_msgs::String::ConstPtr& msg) {
 	string err;
 	auto json = json11::Json::parse(msg->data, err);
 	ros_posenet::Poses poses;
-
+	printf("%d\n", (int)json["poses"].array_items().size() );
 	if (json["poses"].array_items().size() != 0) {
 		for (auto &p : json["poses"].array_items()) {
+
 			ros_posenet::Pose pose;
 			for (auto &k : p["keypoints"].array_items()) {
 				if (std::stod(k["score"].dump()) > 0.5) {
@@ -67,6 +68,8 @@ void callback(const std_msgs::String::ConstPtr& msg) {
 
 
 int main(int argc, char **argv) {
+
+	ROS_INFO("debug#############################");
 
 	ros::init(argc, argv, "injection");
 
