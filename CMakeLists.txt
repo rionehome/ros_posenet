@@ -10,10 +10,10 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     rospy
     std_msgs
-	sensor_msgs
-	geometry_msgs
+	  sensor_msgs
+	  geometry_msgs
     message_generation
-	cv_bridge
+	  cv_bridge
 )
 
 add_definitions(-std=c++11)
@@ -200,8 +200,11 @@ set(CMAKE_CXX_FLAGS "-pthread")
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 add_executable(viewer src/json11.cpp src/viewer.cpp)
+add_dependencies(viewer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
 add_executable(injection_pose src/json11.cpp src/injection_pose.cpp)
+add_dependencies(injection_pose ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(injection_pose ${OpenCV_LIBS} ${catkin_LIBRARIES})
 add_executable(pose_centroid src/pose_centroid.cpp)
+add_dependencies(pose_centroid ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pose_centroid ${OpenCV_LIBS} ${catkin_LIBRARIES})
