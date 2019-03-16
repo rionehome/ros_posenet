@@ -16,12 +16,12 @@
     "url": "git://github.com/hansonrobotics/ros_posenet"
   },
   "dependencies": {
-    "rosnodejs": "2.x",
+    "@tensorflow-models/posenet": "latest",
     "@tensorflow/tfjs": "latest",
     "@tensorflow/tfjs-node": "latest",
     "@tensorflow/tfjs-node-gpu": "latest",
-    "@tensorflow-models/posenet": "latest",
-    "xhr2": "~0.1.4",
-    "json-stringify": "1.x"
+    "json-stringify": "1.x",
+    "rosnodejs": "^3.0.0",
+    "xhr2": "~0.1.4"
   }
 }

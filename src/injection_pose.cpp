@@ -69,8 +69,6 @@ void callback(const std_msgs::String::ConstPtr& msg) {
 
 int main(int argc, char **argv) {
 
-	ROS_INFO("debug#############################");
-
 	ros::init(argc, argv, "injection");
 
 	ros::NodeHandle n;
