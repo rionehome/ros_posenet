@@ -50,8 +50,8 @@ async function run() {
     const scoreThreshold = await getParam('score_threshold', 0.5);
     const nmsRadius = await getParam('nms_radius', 20);
     // topic names
-    const camera_topic = await getParam('topic','/openni2/color')
-    const output_topic = await getParam('poses_topic','js_poses')
+    const camera_topic = await getParam('topic','/posenet/input')
+    const output_topic = await getParam('poses_topic','/posenet/outop')
     // ROS topics
     let pub = rosNode.advertise(output_topic, StringMsg)
 
