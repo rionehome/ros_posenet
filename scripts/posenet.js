@@ -51,7 +51,7 @@ async function run() {
     const nmsRadius = await getParam('nms_radius', 20);
     // topic names
     const camera_topic = await getParam('topic','/posenet/input')
-    const output_topic = await getParam('poses_topic','/posenet/outop')
+    const output_topic = await getParam('poses_topic','/posenet/output')
     // ROS topics
     let pub = rosNode.advertise(output_topic, StringMsg)
 
