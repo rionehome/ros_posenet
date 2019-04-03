@@ -60,7 +60,7 @@ async function run() {
         (data) => {
             // TODO more encodings
             // Currently works wonly with rgb8 data
-            assert(data.encoding == 'bgr8')
+            assert(data.encoding == 'rgb8')
             header = data.header
             let delay = Math.floor(Date.now()) / 1000 - header.stamp.secs - header.stamp.nsecs/1000000000
             //if (delay > 0.5) return
