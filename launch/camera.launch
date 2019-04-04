@@ -23,5 +23,6 @@
             <param name="score_threshold"       value="$(arg score_threshold)" />
             <param name="nms_radius"            value="$(arg nms_radius)" />
         </node>
+        <node pkg="ros_posenet" name="camera" output="screen" respawn="true" type="camera"/>
     </group>
 </launch>
