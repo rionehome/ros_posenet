@@ -1,4 +1,4 @@
-# human\_detection\_posenet
+# ros\_posenet
 ## Overview
 人間検出をPoseNetで行うROSパッケージです。
 
@@ -56,43 +56,7 @@ Following ROS parameters should be set:
 
 ### Publish Topic
 
-* **`/ros_posenet/poses`** pose情報（奥行き無し）の結果( ros_posenet/Poses )
-
-
-
-
-
-## Usage
-
-# Nodes
-## posenet\_camera  
-　カメラからの画像から骨格検出
-### Subscribe\_Topic
-* ros_pose/camera
-
-### Publish\_Topic
-* human_ditection_posenet/poses/2D  
-
-## posenet\_kinect  
-　RGBD情報から骨格の3D情報をレスポンス。mainを利用する  
-### Subscribe\_Topic
-* human_ditection_posenet/kinect/bgr8  
-* human_ditection_posenet/kinect/depth
-
-### Publish\_Topic
-* human_ditection_posenet/poses/3D  
-
-## posenet\_viewer
-　2D情報を描画  
-### Subscribe\_Topic
-* human_ditection_posenet/kinect/bgr8  
-
-### Publish\_Topic
-* None
-
-
-
-
+* **`/ros_posenet/poses`** pose情報（奥行きあり）の結果( ros_posenet/Poses )
 
 ## Limitations
  * Only multiple pose detection implemented
