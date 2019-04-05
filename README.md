@@ -47,7 +47,16 @@ Following ROS parameters should be set:
 
 
 
+## Launch Kinect Node
 
+### Subscribe Topic
+
+* **`/ros_kinect/color`** kinectからの画像を受け取り( sensor_msgs/Image )
+
+
+### Publish Topic
+
+* **`/ros_posenet/poses`** pose情報（奥行き無し）の結果( ros_posenet/Poses )
 
 
 

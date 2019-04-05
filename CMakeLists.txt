@@ -173,7 +173,7 @@ install(PROGRAMS
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-  launch/posenet.launch
+  launch/camera.launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
@@ -199,12 +199,15 @@ set(CMAKE_CXX_FLAGS "-pthread")
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(viewer src/json11.cpp src/viewer.cpp)
-add_dependencies(viewer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
+#add_executable(viewer src/json11.cpp src/viewer.cpp)
+#add_dependencies(viewer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
 add_executable(camera src/json11.cpp src/camera.cpp)
 add_dependencies(camera ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(camera ${OpenCV_LIBS} ${catkin_LIBRARIES})
+add_executable(kinect src/json11.cpp src/kinect.cpp)
+add_dependencies(kinect ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(kinect ${OpenCV_LIBS} ${catkin_LIBRARIES})
 #add_executable(injection_pose src/json11.cpp src/injection_pose.cpp)
 #add_dependencies(injection_pose ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #target_link_libraries(injection_pose ${OpenCV_LIBS} ${catkin_LIBRARIES})
