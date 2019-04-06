@@ -52,7 +52,6 @@ void view(const ros_posenet::Poses::ConstPtr& msg) {
 			cv::circle(color, cv::Point(centroid.x, centroid.y), 30, cv::Scalar(255, 0, 0), -1);
 
 		}
-		printf("debug\n");
 		cout << centroids << '\n';
 
 		cv::imshow("Color", color);
@@ -68,7 +67,7 @@ int main(int argc, char **argv) {
 	ros::NodeHandle n;
 
 	ros::Subscriber sub = n.subscribe("/ros_posenet/poses", 1000, view);
-	ros::Subscriber left_sub = n.subscribe("/openni2/color", 1, getImage_color);
+	ros::Subscriber left_sub = n.subscribe("/usb_cam/image_raw", 1, getImage_color);
 
 
 	ros::spin();
