@@ -35,25 +35,27 @@ void view(const ros_posenet::Poses::ConstPtr& msg) {
 		for (int i = 0; i < (int)msg->poses.size(); ++i) {
 			cv::Point3f centroid{0, 0, 0};
 			for (auto k : msg->poses[i].keypoints) {
-				if (k.position.z != 0) {
-					cv::circle(color, cv::Point(k.position.x, k.position.y), 3, cv::Scalar(0, 0, 255), -1);
-					cv::putText(color, to_string(k.position.z) , cv::Point(k.position.x - 50, k.position.y - 5), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255), 2, CV_AA);
-					//座標加算
-					centroid.x += k.position.x;
-					centroid.y += k.position.y;
-					centroid.z += k.position.z;
-				}
+				cv::circle(color, cv::Point(k.position.x, k.position.y), 3, cv::Scalar(0, 0, 255), -1);
+				cv::putText(color, to_string(k.position.z) , cv::Point(k.position.x - 50, k.position.y - 5), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 255, 255), 2, CV_AA);
+				//座標加算
+				//centroid.x += k.position.x;
+				//centroid.y += k.position.y;
+				//centroid.z += k.position.z;
 			}
+			/*
 			//重心計算
 			centroid.x = centroid.x / (int)(msg->poses[i].keypoints.size());
 			centroid.y = centroid.y / (int)(msg->poses[i].keypoints.size());
-			centroid.z = centroid.z / (int)(msg->poses[i].keypoints.size());
+			if ((int)(msg->poses[i].keypoints.size()) == 0) {
+				centroid.z = 0;
+			} else {
+				centroid.z = centroid.z / (int)(msg->poses[i].keypoints.size());
+			}
 			centroids.push_back(centroid);
 			cv::circle(color, cv::Point(centroid.x, centroid.y), 30, cv::Scalar(255, 0, 0), -1);
+			*/
 
 		}
-		cout << centroids << '\n';
-
 		cv::imshow("Color", color);
 		cv::waitKey(1);
 	}
@@ -66,10 +68,10 @@ int main(int argc, char **argv) {
 
 	ros::NodeHandle n;
 
-	ros::Subscriber sub = n.subscribe("/ros_posenet/poses", 1000, view);
-	ros::Subscriber left_sub = n.subscribe("/usb_cam/image_raw", 1, getImage_color);
-
+	ros::Subscriber sub = n.subscribe("/ros_posenet/poses", 1, view);
+	ros::Subscriber color = n.subscribe("/posenet/input", 1, getImage_color);
 
 	ros::spin();
+
 	return 0;
 }

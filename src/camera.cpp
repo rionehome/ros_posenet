@@ -52,10 +52,10 @@ int main(int argc, char **argv) {
 
 	ros::NodeHandle n;
 
-	ros::Subscriber image = n.subscribe("/usb_cam/image_raw", 1000, image_callback);
-	posenet_image = n.advertise<sensor_msgs::Image>("/posenet/input", 1000);
+	ros::Subscriber image = n.subscribe("/usb_cam/image_raw", 1, image_callback);
+	posenet_image = n.advertise<sensor_msgs::Image>("/posenet/input", 1);
 	ros::Subscriber poses = n.subscribe("/posenet/output", 1, poses_callback);
-	posenet_poses = n.advertise<ros_posenet::Poses>("/ros_posenet/poses", 1000);
+	posenet_poses = n.advertise<ros_posenet::Poses>("/ros_posenet/poses", 1);
 
 	ros::spin();
 
