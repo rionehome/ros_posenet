@@ -23,6 +23,6 @@ def callback(poses):
 
 
 rospy.init_node('pose_viewer')
-rospy.Subscriber('/ros_posenet/poses', Poses, callback)
+rospy.Subscriber('/ros_posenet/poses', Poses, callback, queue_size=1)
 
 rospy.spin()
