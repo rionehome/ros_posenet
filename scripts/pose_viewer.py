@@ -2,22 +2,22 @@
 # coding: UTF-8
 import rospy
 from ros_posenet.msg import Poses
+from sensor_msgs.msg import Image
 import matplotlib.pyplot as plt
 
 
-def callback(poses):
-    plt.cla()
-    for pose in poses.poses:
-        for k in pose.keypoints:
-            print k.position.z
-            # ax.scatter(k.position.x, k.position.y, k.position.z)
-            plt.scatter(k.position.x, -k.position.y)
-    plt.pause(.001)
+class Visualize:
+    def __init__(self):
+        rospy.Subscriber("/ros_posenet/result", Poses, self.poses_callback)
+        rospy.Subscriber("/posenet/input", Image, self.image_callback)
     
-    # plt.pause(.01)
+    def poses_callback(self):
+        pass
+    
+    def image_callback(self):
+        pass
 
 
-rospy.init_node('pose_viewer')
-rospy.Subscriber('/ros_posenet/poses', Poses, callback, queue_size=1)
-
-rospy.spin()
+if __name__ == '__main__':
+    Visualize()
+    rospy.spin()
