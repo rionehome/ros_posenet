@@ -3,7 +3,7 @@
 #include "std_msgs/String.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/highgui.hpp>
-#include "json11.hpp"
+#include "module/json11.hpp"
 #include "ros_posenet/Keypoint.h"
 #include "ros_posenet/Poses.h"
 #include "ros_posenet/Pose.h"

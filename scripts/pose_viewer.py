@@ -3,11 +3,6 @@
 import rospy
 from ros_posenet.msg import Poses
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
 
 
 def callback(poses):
@@ -18,7 +13,7 @@ def callback(poses):
             # ax.scatter(k.position.x, k.position.y, k.position.z)
             plt.scatter(k.position.x, -k.position.y)
     plt.pause(.001)
-
+    
     # plt.pause(.01)
 
 
