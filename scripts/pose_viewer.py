@@ -30,7 +30,7 @@ class Visualize:
         except CvBridgeError as e:
             print 'Cv_Bridge_Error:', e
         
-        if self.poses == None:
+        if self.poses is None:
             return
         
         for pose in self.poses:
