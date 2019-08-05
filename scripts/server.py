@@ -11,7 +11,7 @@ app = Flask(__name__)
 HOST = "127.0.0.1"
 
 
-def exit_gracefully(signum, frame):
+def exit(signum, frame):
     print signum, frame
     sys.exit(1)
 
@@ -24,6 +24,6 @@ def media(path):
 
 
 if __name__ == '__main__':
-    signal.signal(signal.SIGINT, exit_gracefully)
+    signal.signal(signal.SIGINT, exit)
     rospy.init_node("model_server")
     app.run(debug=False, host=HOST, port=8000)
