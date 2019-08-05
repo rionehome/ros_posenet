@@ -25,4 +25,5 @@
         </node>
         <node pkg="ros_posenet" name="camera" output="screen" respawn="true" type="camera"/>
     </group>
+    <node pkg="ros_posenet" name="model_server" output="screen" respawn="true" type="server.py"/>
 </launch>

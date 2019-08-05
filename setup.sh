@@ -1,0 +1,3 @@
+sed -i 's/if (config === void 0) { config = MOBILENET_V1_CONFIG; }/config = MOBILENET_V1_CONFIG;/g' ./node_modules/@tensorflow-models/posenet/dist/posenet_model.js
+sed -i 's@https://storage.googleapis.com/tfjs-models/savedmodel/posenet/@http://localhost:8000/@g' ./node_modules/@tensorflow-models/posenet/dist/checkpoints.js
+sed -i 's@https://storage.googleapis.com/tfjs-models/savedmodel/posenet/@http://localhost:8000/@g' ./node_modules/@tensorflow-models/posenet/dist/posenet.js
