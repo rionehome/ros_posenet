@@ -199,9 +199,9 @@ set(CMAKE_CXX_FLAGS "-pthread")
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(viewer src/module/json11.cpp src/viewer.cpp)
-add_dependencies(viewer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
+#add_executable(viewer src/module/json11.cpp src/viewer.cpp)
+#add_dependencies(viewer ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(viewer ${OpenCV_LIBS} ${catkin_LIBRARIES})
 add_executable(camera src/module/json11.cpp src/camera.cpp include/ros_posenet/camera.h)
 add_dependencies(camera ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(camera ${OpenCV_LIBS} ${catkin_LIBRARIES})
