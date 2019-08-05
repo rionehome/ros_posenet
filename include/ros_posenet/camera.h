@@ -8,8 +8,10 @@
 class Camera
 {
 public:
-    Camera(ros::NodeHandle *n);
+    explicit Camera(ros::NodeHandle *n);
     ~Camera();
+
+private:
     ros::Subscriber color_image_sub;
     ros::Subscriber output_sub;
     ros::Publisher input_pub;
