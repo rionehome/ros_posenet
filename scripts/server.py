@@ -19,7 +19,7 @@ def killer(signum, frame):
 @app.route('/<path:path>')
 def media(path):
     __model_path__ = rospkg.RosPack().get_path('ros_posenet') + "/etc/models"
-    print __model_path__
+    print "get:", path
     return send_from_directory(__model_path__, path)
 
 
