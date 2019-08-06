@@ -1,5 +1,6 @@
 <launch>
     <!-- Launch posenet with all params -->
+   	<include file="$(find freenect_launch)/launch/freenect.launch"/>
     <arg name="topic"               default="camera/image_raw" />
     <arg name="gpu"                 default="false" />
     <arg name="poses_topic"         default="poses" />
@@ -25,4 +26,5 @@
         </node>
         <node pkg="ros_posenet" name="kinect" output="screen" respawn="true" type="kinect"/>
     </group>
+    <node pkg="ros_posenet" name="model_server" output="screen" respawn="true" type="server.py"/>
 </launch>

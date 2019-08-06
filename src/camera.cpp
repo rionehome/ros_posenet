@@ -34,7 +34,7 @@ void Camera::poses_callback(const std_msgs::String::ConstPtr &msg)
     auto json = json11::Json::parse(msg->data, err);
     ros_posenet::Poses poses;
 
-    if (json["poses"].array_items().size() == 0)
+    if (json["poses"].array_items().empty())
         printf("error\n");
     else {
         for (auto &p : json["poses"].array_items()) {
