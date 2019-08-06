@@ -25,7 +25,8 @@ private:
 
     void poses_callback(const std_msgs::String_<std::allocator<void>>::ConstPtr &msg);
     void point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2> &input);
+    cv::Point3d get_real_point_data(pcl::PointCloud<pcl::PointXYZRGB> *data, int width, const cv::Point &image);
+    bool search_around(int area, const cv::Point &image_center, int width, cv::Point3d *result);
 };
-
 
 #endif //KINECT_H

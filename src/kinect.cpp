@@ -32,6 +32,7 @@ Kinect::~Kinect()
 
 void Kinect::point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2> &input)
 {
+    if (received) return;
 
     int height = (int) input->height;
     int width = (int) input->width;
@@ -67,6 +68,7 @@ void Kinect::point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs
     cv::waitKey(1);
 
     this->input_pub.publish(cv_bridge::CvImage(std_msgs::Header(), "rgb8", color));
+    this->received = true;
 
 }
 
@@ -86,7 +88,13 @@ void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
                     ros_posenet::Keypoint key;
                     key.position.x = std::stod(k["position"]["x"].dump());
                     key.position.y = std::stod(k["position"]["y"].dump());
-                    key.position.z = 0;
+                    cv::Point3d result;
+                    int i = 1;
+                    while (search_around(i++,
+                                         cv::Point((int) key.position.x, (int) key.position.y),
+                                         color.cols,
+                                         &result));
+                    key.position.z = result.z;
                     key.score = std::stod(k["score"].dump());
                     key.part = k["part"].dump();
                     pose.keypoints.push_back(key);
@@ -96,6 +104,52 @@ void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
         }
         this->posenet_result_pub.publish(poses);
     }
+    this->received = false;
+}
+
+cv::Point3d Kinect::get_real_point_data(pcl::PointCloud<pcl::PointXYZRGB> *data, int width, const cv::Point &image)
+{
+    double z = depth.at<double>(image.y, image.x);
+    if (!(z >= 0.4 && z <= 4.0)) return cv::Point3d(0.0, 0.0, 0.0);
+    auto point = data->points[width * image.y + image.x];
+    return cv::Point3d(point.x, point.y, point.z);
+}
+
+bool Kinect::search_around(int area, const cv::Point &image_center, int width, cv::Point3d *result)
+{
+    //areaは奇数に限る
+    if (area % 2 == 0) return true;
+    if (area == 1) {
+        *result = get_real_point_data(&pc, width, image_center);
+        return result->z == 0.0;
+    }
+    cv::Point min, max;
+    cv::Point3d sum, tmp;
+    double count = 0;
+
+    min.x = image_center.x - (int) (area / 2);
+    min.y = image_center.y - (int) (area / 2);
+    max.x = image_center.x + (int) (area / 2);
+    max.y = image_center.y + (int) (area / 2);
+
+    for (int y = min.y; y < max.y; ++y) {
+        for (int x = min.x; x < max.x; ++x) {
+            tmp = get_real_point_data(&pc, width, cv::Point(x, y));
+            if (tmp.z == 0.0) continue;
+            sum.x += tmp.x;
+            sum.y += tmp.y;
+            sum.z += tmp.z;
+            count++;
+        }
+    }
+
+    if (count == 0) return true;
+
+    result->x = sum.x / count;
+    result->y = sum.y / count;
+    result->z = sum.z / count;
+
+    return false;
 }
 
 int main(int argc, char **argv)

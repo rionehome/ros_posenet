@@ -1,5 +1,6 @@
 <launch>
     <!-- Launch posenet with all params -->
+   	<include file="$(find freenect_launch)/launch/freenect.launch"/>
     <arg name="topic"               default="camera/image_raw" />
     <arg name="gpu"                 default="false" />
     <arg name="poses_topic"         default="poses" />
