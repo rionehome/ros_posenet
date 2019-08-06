@@ -11,19 +11,16 @@
     PoseNet demo: [Here](https://storage.googleapis.com/tfjs-models/demos/posenet/camera.html)
 
 ## Setup
-  *  このワークスペースをcloneした後、buildしてください。
-  * パッケージの中で`npm install`を実行してください。
-
-  * もしオフラインで利用する場合は以下のファイルのURLをlocalhost:8000に変更してください。  
-     `..node_modules/@tensorflow-models/posenet/dist/checkpoints.js`  
-     `..node_modules/@tensorflow-models/posenet/dist/posenet.js`  
+  * このワークスペースをcloneした後、buildしてください。
+  * パッケージの中で`npm install`を実行してください(Webauthではインストールできないので注意)。
+  * さらにPoseNetのv2での不具合修正とオフラインで実行できるようにするために、同じディレクトリ内で`bash setup.sh`を実行する必要がある。
 
 ## 実行
   ・カメラの情報から関節を検出する場合
-  * `bash camera_posenet.sh`
+  * `roslaunch ros_posenet camera.launch`
 
   ・キネクトの情報から関節を検出する場合
-  * `bash kinect_posenet.sh`
+  * `roslaunch ros_posenet kinect.launch`
 
 ## setting
 Following ROS parameters should be set:  
@@ -43,7 +40,7 @@ Following ROS parameters should be set:
 
 ### Publish Topic
 
-* **`/ros_posenet/poses`** pose情報（奥行き無し）の結果( ros_posenet/Poses )
+* **`/ros_posenet/result`** pose情報（奥行き無し）の結果( ros_posenet/Poses )
 
 
 
@@ -56,7 +53,7 @@ Following ROS parameters should be set:
 
 ### Publish Topic
 
-* **`/ros_posenet/poses`** pose情報（奥行きあり）の結果( ros_posenet/Poses )
+* **`/ros_posenet/result`** pose情報（奥行きあり）の結果( ros_posenet/Poses )
 
 ## Limitations
  * Only multiple pose detection implemented
