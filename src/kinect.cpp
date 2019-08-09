@@ -5,6 +5,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/highgui.hpp>
 #include "module/json11.hpp"
+#include <string>
 #include "ros_posenet/Keypoint.h"
 #include "ros_posenet/Poses.h"
 #include "ros_posenet/Pose.h"
@@ -77,6 +78,8 @@ void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
     std::string err;
     auto json = json11::Json::parse(msg->data, err);
     ros_posenet::Poses poses;
+    int image_x, image_y;
+    cv::Point3d real_position;
 
     if (json["poses"].array_items().empty())
         printf("error\n");
@@ -86,17 +89,18 @@ void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
             for (auto &k : p["keypoints"].array_items()) {
                 if (std::stod(k["score"].dump()) > 0.5) {
                     ros_posenet::Keypoint key;
-                    key.position.x = std::stod(k["position"]["x"].dump());
-                    key.position.y = std::stod(k["position"]["y"].dump());
+                    image_x = (int) std::stod(k["position"]["x"].dump());
+                    image_y = (int) std::stod(k["position"]["y"].dump());
+                    real_position = get_real_point_data(&pc, color.cols, cv::Point(image_x, image_y));
+                    key.position.x = real_position.x;
+                    key.position.y = real_position.y;
                     cv::Point3d result;
                     int i = 1;
-                    while (search_around(i++,
-                                         cv::Point((int) key.position.x, (int) key.position.y),
-                                         color.cols,
-                                         &result));
+                    while (search_around(i++, cv::Point((int) image_x, (int) image_y), color.cols, &result));
                     key.position.z = result.z;
                     key.score = std::stod(k["score"].dump());
                     key.part = k["part"].dump();
+                    key.part.erase(remove(key.part.begin(), key.part.end(), '"'), key.part.end());
                     pose.keypoints.push_back(key);
                 }
             }
