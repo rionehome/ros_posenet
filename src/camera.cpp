@@ -47,6 +47,7 @@ void Camera::poses_callback(const std_msgs::String::ConstPtr &msg)
                     key.position.z = 0;
                     key.score = std::stod(k["score"].dump());
                     key.part = k["part"].dump();
+                    key.part.erase(remove(key.part.begin(), key.part.end(), '"'), key.part.end());
                     pose.keypoints.push_back(key);
                 }
             }

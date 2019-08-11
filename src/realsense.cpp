@@ -14,24 +14,24 @@
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/conversions.h>
 #include <pcl_ros/transforms.h>
-#include "../include/ros_posenet/kinect.h"
+#include "../include/ros_posenet/realsense.h"
 
-Kinect::Kinect(ros::NodeHandle *n)
+Realsense::Realsense(ros::NodeHandle *n)
 {
-    printf("Start class of 'Kinect'\n");
+    printf("Start class of 'Realsense'\n");
     this->point_cloud_sub =
-        n->subscribe("/camera/depth_registered/points", 1, &Kinect::point_cloud_data_callback, this);
-    this->output_sub = n->subscribe("/posenet/output", 1, &Kinect::poses_callback, this);
+        n->subscribe("/camera/depth_registered/points", 1, &Realsense::point_cloud_data_callback, this);
+    this->output_sub = n->subscribe("/posenet/output", 1, &Realsense::poses_callback, this);
     this->input_pub = n->advertise<sensor_msgs::Image>("/posenet/input", 1);
     this->posenet_result_pub = n->advertise<ros_posenet::Poses>("/ros_posenet/result", 1);
 }
 
-Kinect::~Kinect()
+Realsense::~Realsense()
 {
-    printf("Shutdown class of 'Kinect'\n");
+    printf("Shutdown class of 'Realsense'\n");
 }
 
-void Kinect::point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2> &input)
+void Realsense::point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2> &input)
 {
     if (received) return;
 
@@ -73,7 +73,7 @@ void Kinect::point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs
 
 }
 
-void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
+void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
 {
     std::string err;
     auto json = json11::Json::parse(msg->data, err);
@@ -111,7 +111,7 @@ void Kinect::poses_callback(const std_msgs::String::ConstPtr &msg)
     this->received = false;
 }
 
-cv::Point3d Kinect::get_real_point_data(pcl::PointCloud<pcl::PointXYZRGB> *data, int width, const cv::Point &image)
+cv::Point3d Realsense::get_real_point_data(pcl::PointCloud<pcl::PointXYZRGB> *data, int width, const cv::Point &image)
 {
     double z = depth.at<double>(image.y, image.x);
     if (!(z >= 0.4 && z <= 4.0)) return cv::Point3d(0.0, 0.0, 0.0);
@@ -119,7 +119,7 @@ cv::Point3d Kinect::get_real_point_data(pcl::PointCloud<pcl::PointXYZRGB> *data,
     return cv::Point3d(point.x, point.y, point.z);
 }
 
-bool Kinect::search_around(int area, const cv::Point &image_center, int width, cv::Point3d *result)
+bool Realsense::search_around(int area, const cv::Point &image_center, int width, cv::Point3d *result)
 {
     //areaは奇数に限る
     if (area % 2 == 0) return true;
@@ -158,9 +158,9 @@ bool Kinect::search_around(int area, const cv::Point &image_center, int width, c
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "camera");
+    ros::init(argc, argv, "realsense");
     ros::NodeHandle n;
-    Kinect camera(&n);
+    Realsense realsense(&n);
     ros::spin();
     return 0;
 }

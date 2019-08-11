@@ -21,14 +21,17 @@
 
   ・キネクトの情報から関節を検出する場合
   * `roslaunch ros_posenet kinect.launch`
+  
+  ・Realsenseの情報から関節を検出する場合
+  * `roslaunch ros_posenet realsense.launch`
 
 ## setting
 Following ROS parameters should be set:  
 
-  *  `gpu: (true / false)` - Specifies if GPU acceleration should be used  
+  * `gpu: (true / false)` - Specifies if GPU acceleration should be used  
   * `topic` - Uncompressed RGB8 encoded image topic  
   * `out_topic` -  specifies topic for result output.   Output topic publishes JSON string that needs to be decoded as `std_msgs/String` message  
-  *  Algorithm parameters to adjust performance. See [launch file](launch/posenet.launch) for full list> References could be found [PoseNet Official Github](https://github.com/tensorflow/tfjs-models/tree/master/posenet#inputs-2)
+  *  Algorithm parameters to adjust performance. See [launch file](launch/camera.launch) for full list> References could be found [PoseNet Official Github](https://github.com/tensorflow/tfjs-models/tree/master/posenet#inputs-2)
 
 
 ## Launch Camera Node
