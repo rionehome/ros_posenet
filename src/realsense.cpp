@@ -60,13 +60,13 @@ void Realsense::point_cloud_data_callback(const boost::shared_ptr<const sensor_m
             depth.at<double>(h, w) = z;
         }
     }
-
+    ros::Duration(0.01).sleep();
+    /*
     depth.convertTo(view_depth, CV_8UC1, 255.0 / 4.0);
-
     cv::namedWindow("depth", CV_WINDOW_NORMAL);
     cv::imshow("depth", view_depth);
-
     cv::waitKey(1);
+    */
 
     this->input_pub.publish(cv_bridge::CvImage(std_msgs::Header(), "rgb8", color));
     this->received = true;
@@ -87,20 +87,28 @@ void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
         for (auto &p : json["poses"].array_items()) {
             ros_posenet::Pose pose;
             for (auto &k : p["keypoints"].array_items()) {
-                if (std::stod(k["score"].dump()) > 0.5) {
+                if (std::stod(k["score"].dump()) > 0.8) {
                     ros_posenet::Keypoint key;
                     image_x = (int) std::stod(k["position"]["x"].dump());
                     image_y = (int) std::stod(k["position"]["y"].dump());
                     real_position = get_real_point_data(&pc, color.cols, cv::Point(image_x, image_y));
+
                     key.position.x = real_position.x;
                     key.position.y = real_position.y;
+                    key.position.z = real_position.z;
+                    key.image_position.x = image_x;
+                    key.image_position.y = image_y;
+                    key.score = std::stod(k["score"].dump());
+                    key.part = k["part"].dump();
+                    key.part.erase(remove(key.part.begin(), key.part.end(), '"'), key.part.end());
+
+                    /*
                     cv::Point3d result;
                     int i = 1;
                     while (search_around(i++, cv::Point((int) image_x, (int) image_y), color.cols, &result));
                     key.position.z = result.z;
-                    key.score = std::stod(k["score"].dump());
-                    key.part = k["part"].dump();
-                    key.part.erase(remove(key.part.begin(), key.part.end(), '"'), key.part.end());
+                    */
+
                     pose.keypoints.push_back(key);
                 }
             }
