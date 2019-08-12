@@ -22,7 +22,6 @@ private:
     ros::Subscriber point_cloud_sub;
     ros::Publisher input_pub;
     ros::Publisher posenet_result_pub;
-    ros::Publisher posenet_image_result_pub;
 
     void poses_callback(const std_msgs::String_<std::allocator<void>>::ConstPtr &msg);
     void point_cloud_data_callback(const boost::shared_ptr<const sensor_msgs::PointCloud2> &input);

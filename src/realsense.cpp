@@ -24,7 +24,6 @@ Realsense::Realsense(ros::NodeHandle *n)
     this->output_sub = n->subscribe("/posenet/output", 1, &Realsense::poses_callback, this);
     this->input_pub = n->advertise<sensor_msgs::Image>("/posenet/input", 1);
     this->posenet_result_pub = n->advertise<ros_posenet::Poses>("/ros_posenet/result", 1);
-    this->posenet_image_result_pub = n->advertise<ros_posenet::Poses>("/ros_posenet/image_result", 1);
 }
 
 Realsense::~Realsense()
@@ -61,13 +60,13 @@ void Realsense::point_cloud_data_callback(const boost::shared_ptr<const sensor_m
             depth.at<double>(h, w) = z;
         }
     }
-
+    ros::Duration(0.01).sleep();
+    /*
     depth.convertTo(view_depth, CV_8UC1, 255.0 / 4.0);
-
     cv::namedWindow("depth", CV_WINDOW_NORMAL);
     cv::imshow("depth", view_depth);
-
     cv::waitKey(1);
+    */
 
     this->input_pub.publish(cv_bridge::CvImage(std_msgs::Header(), "rgb8", color));
     this->received = true;
@@ -79,7 +78,6 @@ void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
     std::string err;
     auto json = json11::Json::parse(msg->data, err);
     ros_posenet::Poses poses;
-    ros_posenet::Poses image_poses;
     int image_x, image_y;
     cv::Point3d real_position;
 
@@ -88,11 +86,9 @@ void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
     else {
         for (auto &p : json["poses"].array_items()) {
             ros_posenet::Pose pose;
-            ros_posenet::Pose image_pose;
             for (auto &k : p["keypoints"].array_items()) {
-                if (std::stod(k["score"].dump()) > 0.5) {
+                if (std::stod(k["score"].dump()) > 0.8) {
                     ros_posenet::Keypoint key;
-                    ros_posenet::Keypoint image_key;
                     image_x = (int) std::stod(k["position"]["x"].dump());
                     image_y = (int) std::stod(k["position"]["y"].dump());
                     real_position = get_real_point_data(&pc, color.cols, cv::Point(image_x, image_y));
@@ -100,17 +96,11 @@ void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
                     key.position.x = real_position.x;
                     key.position.y = real_position.y;
                     key.position.z = real_position.z;
+                    key.image_position.x = image_x;
+                    key.image_position.y = image_y;
                     key.score = std::stod(k["score"].dump());
                     key.part = k["part"].dump();
                     key.part.erase(remove(key.part.begin(), key.part.end(), '"'), key.part.end());
-
-                    image_key.position.x = image_x;
-                    image_key.position.y = image_y;
-                    image_key.position.z = real_position.z;
-                    image_key.score = std::stod(k["score"].dump());
-                    image_key.part = k["part"].dump();
-                    image_key.part
-                        .erase(remove(image_key.part.begin(), image_key.part.end(), '"'), image_key.part.end());
 
                     /*
                     cv::Point3d result;
@@ -120,14 +110,11 @@ void Realsense::poses_callback(const std_msgs::String::ConstPtr &msg)
                     */
 
                     pose.keypoints.push_back(key);
-                    image_pose.keypoints.push_back(image_key);
                 }
             }
             poses.poses.push_back(pose);
-            image_poses.poses.push_back(image_pose);
         }
         this->posenet_result_pub.publish(poses);
-        this->posenet_image_result_pub.publish(image_poses);
     }
     this->received = false;
 }
