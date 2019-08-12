@@ -31,17 +31,26 @@ class Visualize:
             print 'Cv_Bridge_Error:', e
         
         if self.poses is None:
+            cv2.imshow("window", self.color_image)
+            cv2.waitKey(1)
             return
         
+        person_id = 0
         for pose in self.poses:
             for key in pose.keypoints:
-                cv2.circle(self.color_image, (int((key.position.x + 0.5) * 640), int((key.position.y + 0.5) * 480)), 10,
-                           (0, 255, 0),
+                color_table = {0: (255, 0, 0), 1: (0, 255, 0), 2: (0, 0, 255), 3: (255, 0, 255), 4: (255, 255, 0)}
+                cv2.circle(self.color_image, (int(key.image_position.x), int(key.image_position.y)), 10,
+                           (color_table[person_id]),
                            thickness=-1)
-                cv2.putText(self.color_image, str((key.position.x, key.position.y, key.position.z)),
-                            (int((key.position.x + 0.5) * 640), int((key.position.y + 0.5) * 480)),
+                cv2.putText(self.color_image,
+                            str((float("{0:.2f}".format(key.position.x)), float("{0:.2f}".format(key.position.y)),
+                                 float("{0:.2f}".format(key.position.z)))),
+                            (int(key.image_position.x), int(key.image_position.y)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (255, 255, 255), 1, cv2.LINE_AA)
+            person_id += 1
+        
+        del self.poses[:]
         cv2.imshow("window", self.color_image)
         cv2.waitKey(1)
 
